@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Проект на реакте на тему ИП, поиск, БД итд.
 
 ## Available Scripts
 
