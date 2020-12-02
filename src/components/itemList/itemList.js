@@ -2,21 +2,24 @@ import React, {Component} from 'react';
 import './itemList.css';
 import gotService from "../../services/gotService";
 import Spinner from "../spinner";
+import ErrorMessage from "../errorMesage";
 
 
 export default class ItemList extends Component {
 
-    gotService = new gotService();
+    //gotService = new gotService();
 
     state = {
-        charList: null
+        itemList: null
     }
 
     componentDidMount() {
-        this.gotService.getAllCharacters()
-            .then((charList) => {
+        const {getData} = this.props;
+
+        getData()
+            .then((itemList) => {
                 this.setState({
-                    charList
+                    itemList
                 })
             })
     }
@@ -24,15 +27,15 @@ export default class ItemList extends Component {
     renderItems(arr) {
         return arr.map((item, i) => {
             //получать уникальный идентификатор обьектов
+            //сделать ф-ю возвращающую id из item добавить в сервис значение id у которго значение будет эта функця(там где культура ,имя итд)
             let {id} = item;
+            const label = this.props.renderItem(item);
             return (
                 <li
-                    //не получается в key передать id
-                    key={i}
+                    key={id}
                     className="list-group-item"
-                    onClick={() => this.props.onCharSelected(41 + i)}>
-                    {/*onClick={() => this.props.onCharSelected(id)}*/}>
-                    {item.name}
+                    onClick={() => this.props.onItemSelected(id)}>
+                    {label}
                 </li>
             )
         })
@@ -40,13 +43,13 @@ export default class ItemList extends Component {
 
     render() {
 
-        const {charList} = this.state;
+        const {itemList} = this.state;
 
-        if (!charList) {
+        if (!itemList) {
             return <Spinner/>
         }
 
-        const items = this.renderItems(charList);
+        const items = this.renderItems(itemList);
 
         return (
             <ul className="item-list list-group">

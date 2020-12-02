@@ -1,11 +1,12 @@
 
+
 export default class GotService {
 
     constructor() {
         this._apiBase = 'https://www.anapioficeandfire.com/api';
     }
 
-    async getResource (url) {
+    getResource = async (url) => {
         const res = await fetch(`${this._apiBase}${url}`);
 
         if (!res.ok) {
@@ -14,25 +15,46 @@ export default class GotService {
 
         return await res.json();
     };
-    async getAllCharacters () {
+
+    getAllCharacters = async () => {
         const res = await this.getResource('/characters?page=5&pageSize=10');
         return res.map(this._transformCharacter);
     }
-    async getCharacter(id) {
+
+    getCharacter = async (id) => {
         const character = await this.getResource(`/characters/${id}`);
         return this._transformCharacter(character);
     }
-    async getAllHouses() {
+
+    getAllHouses = async () => {
         const houses = await this.getResource('/houses');
-        return houses.map(this._transformCharacter)
-    }
-    async getHouse(id) {
-        const house = await this.getResource(`/houses/${id}`);
-        return this._transformCharacter(house);
+        return houses.map(this._transformHouse)
     }
 
-    _transformCharacter(char) {
+    getHouse = async (id) => {
+        const house = await this.getResource(`/houses/${id}`);
+        return this._transformHouse(house);
+    }
+
+    getAllBooks = async () => {
+        const books = await this.getResource('/books/');
+        return books.map(this._transformBook);
+    }
+
+    getBook = async (id) => {
+        const book = await this.getResource(`/books/${id}`);
+        return this._transformBook(book);
+    }
+
+    _idFromChar = (item) => {
+        const onlyNum = /\/([0-9]+)$/;// чтобы id были только чилсаим
+        return item.url.match(onlyNum)[1];
+    }
+
+
+    _transformCharacter = (char) => {
         return {
+            id: this._idFromChar(char),
             name: char.name,
             gender: char.gender,
             born: char.born,
@@ -41,8 +63,9 @@ export default class GotService {
         }
     }
 
-    _transformHouse(house) {
+    _transformHouse = (house) => {
         return {
+            id: this._idFromChar(house),
             name: house.name,
             region: house.region,
             words: house.words,
@@ -52,8 +75,9 @@ export default class GotService {
         }
     }
 
-    _transformBook(book) {
+    _transformBook = (book) => {
         return {
+            id: this._idFromChar(book),
             name: book.name,
             numberOfPages: book.numberOfPages,
             publisher: book.publisher,
