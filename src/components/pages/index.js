@@ -1,14 +1,10 @@
-import BooksPage from "./booksPage";
-import BooksItems from "./booksItems";
-import CharacterPage from "./characterPage";
-import HousesPage from "./housesPage";
-
+import CharacterPage from './characterPage';
+import BooksPage from './booksPage';
+import HousesPage from './housesPage';
+import BooksItem from './booksItem';
 export {
-    BooksPage,
-    BooksItems,
     CharacterPage,
-    HousesPage
+    BooksPage,
+    HousesPage,
+    BooksItem
 }
-
-
-

@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import './itemList.css';
-import gotService from "../../services/gotService";
-import Spinner from "../spinner";
-import ErrorMessage from "../errorMesage";
-
+import Spinner from '../spinner';
 
 export default class ItemList extends Component {
-
-    //gotService = new gotService();
 
     state = {
         itemList: null
@@ -17,7 +12,7 @@ export default class ItemList extends Component {
         const {getData} = this.props;
 
         getData()
-            .then((itemList) => {
+            .then( (itemList) => {
                 this.setState({
                     itemList
                 })
@@ -25,16 +20,16 @@ export default class ItemList extends Component {
     }
 
     renderItems(arr) {
-        return arr.map((item, i) => {
-            //получать уникальный идентификатор обьектов
-            //сделать ф-ю возвращающую id из item добавить в сервис значение id у которго значение будет эта функця(там где культура ,имя итд)
-            let {id} = item;
+        return arr.map((item) => {
+            const {id} = item;
+
             const label = this.props.renderItem(item);
+
             return (
-                <li
+                <li 
                     key={id}
                     className="list-group-item"
-                    onClick={() => this.props.onItemSelected(id)}>
+                    onClick={ () => this.props.onItemSelected(id)}>
                     {label}
                 </li>
             )
@@ -42,7 +37,6 @@ export default class ItemList extends Component {
     }
 
     render() {
-
         const {itemList} = this.state;
 
         if (!itemList) {
@@ -51,18 +45,10 @@ export default class ItemList extends Component {
 
         const items = this.renderItems(itemList);
 
+
         return (
             <ul className="item-list list-group">
                 {items}
-                {/*<li className="list-group-item">
-                    John Snow
-                </li>
-                <li className="list-group-item">
-                    Brandon Stark
-                </li>
-                <li className="list-group-item">
-                    Geremy
-                </li>*/}
             </ul>
         );
     }

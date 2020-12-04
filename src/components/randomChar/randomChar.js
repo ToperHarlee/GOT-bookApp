@@ -1,32 +1,24 @@
 import React, {Component} from 'react';
 import './randomChar.css';
-import gotService from "../../services/gotService";
+import gotService from '../../services/gotService';
 import Spinner from '../spinner';
-import ErrorMessage from "../errorMesage";
+import ErrorMessage from '../errorMessage';
 
 export default class RandomChar extends Component {
 
-    /*constructor() {
-        super();
-        console.log('constructor');
-    }*/
-
     gotService = new gotService();
-
     state = {
         char: {},
         loading: true,
         error: false
     }
-    //liveCicle хук
+
     componentDidMount() {
-        console.log('mounting');
         this.updateChar();
-        this.timerId = setInterval(this.updateChar, 3500);
+        this.timerId = setInterval(this.updateChar, 15000);
     }
 
-    componentWillUnmount() {
-        console.log('unmounting');
+    componentWillUnmount(){
         clearInterval(this.timerId);
     }
 
@@ -45,24 +37,18 @@ export default class RandomChar extends Component {
     }
 
     updateChar = () => {
-        console.log('update');
-        const id = Math.floor(Math.random()*140 + 25);
-        //const id = 130000000000;
+        const id = Math.floor(Math.random()*140 + 25); //25-140
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError);
     }
 
     render() {
-        console.log('render');
-        const {char, loading, error} = this.state;
-        const errorMessage = error ? <ErrorMessage/> : null;
+        const { char, loading, error } = this.state;
 
-        /*if (loading) {
-            return <Spinner/>
-        }*/
-        const spinner = loading ? <Spinner/> : null,
-            content = !(loading || error) ? <View char={char}/> : null;
+        const errorMessage = error ? <ErrorMessage/> : null;
+        const spinner = loading ? <Spinner/> : null;
+        const content = !(loading || error) ? <View char={char}/> : null;
 
         return (
             <div className="random-block rounded">
@@ -73,7 +59,6 @@ export default class RandomChar extends Component {
         );
     }
 }
-//сделать так чтобы вместо пустых строк выводилось сообщение
 const View = ({char}) => {
     const {name, gender, born, died, culture} = char;
     return (
@@ -82,7 +67,7 @@ const View = ({char}) => {
             <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between">
                     <span className="term">Gender </span>
-                    <span>{gender}</span>
+                    <span>{gender ? gender : 'информация дополняется...'}</span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between">
                     <span className="term">Born </span>
