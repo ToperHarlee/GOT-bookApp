@@ -40,6 +40,7 @@ export default class App extends Component{
 
     render() {
         const char = this.state.showRandomChar;
+
         if (this.state.error){
             return <ErrorMessage/>
         }
@@ -52,7 +53,7 @@ export default class App extends Component{
                     <Container>
                         <Row className="firstRow">
                             <Col lg={{size: 5, offset: 0}}>
-                                {char ? <RandomChar/> : null}
+                                {char ? <RandomChar /*interval={15000}*//> : null}
                             </Col>
                             <Button color="primary"
                                     onClick={this.toggleRandomChar}>Сменить персонажа</Button>
